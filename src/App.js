@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './index.less'
 
 class App extends Component {
     render() {
