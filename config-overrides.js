@@ -1,6 +1,7 @@
 const {
     override,
     addLessLoader,//less样式
+    fixBabelImports,  //按需引入样式
 } = require('customize-cra');
 const modifyVars = require('./theme');
 
@@ -11,5 +12,10 @@ module.exports = override(
             javascriptEnabled: true,
             modifyVars: modifyVars
         },
+    }),
+    fixBabelImports('import', {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true,//这里要写true
     }),
 );
