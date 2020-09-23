@@ -5,6 +5,20 @@ import {
     Button
 } from "antd";
 
+const testHoc = (WrappedComponent)=>{
+    return class HocComponent extends Component{
+        render() {
+            return (
+                <>
+                    <WrappedComponent/>
+                    <div>这是高阶组件</div>
+                </>
+            )
+        }
+    }
+}
+
+@testHoc
 class App extends Component {
     render() {
         return (
