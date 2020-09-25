@@ -1,30 +1,30 @@
 import React, {Component} from 'react';
 import './index.less'
+import {Route,Switch,Redirect} from 'react-router-dom'
+import {adminRouter} from "./routes";
+
 
 import {
     Button
 } from "antd";
 
-const testHoc = (WrappedComponent)=>{
-    return class HocComponent extends Component{
-        render() {
-            return (
-                <>
-                    <WrappedComponent/>
-                    <div>这是高阶组件</div>
-                </>
-            )
-        }
-    }
-}
-
-@testHoc
 class App extends Component {
     render() {
         return (
             <div>
-                App
-                <Button >按钮</Button>
+                <div>这里是公共的部分</div>
+                <Switch>
+                {
+                    adminRouter.map((item, index) => {
+                        return <Route key={item.pathname+index} path={item.pathname} exact={item.exact} render={(routerProps) => {
+                            //TODO 页面级别的权限验证
+                            return <item.component {...routerProps}/>
+                        }}/>
+                    })
+                }
+                <Redirect from={'/admin'} to={adminRouter[0].pathname} exact/>
+                <Redirect to={'/404'} />
+                </Switch>
             </div>
         );
     }
