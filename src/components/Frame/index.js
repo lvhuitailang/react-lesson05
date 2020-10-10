@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import {Layout, Menu, Breadcrumb} from 'antd';
+import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import logo from './logo.png'
 import indexcss from './index.less'
-
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+import {adminRoutes} from '../../routes'
+const {Header, Content, Sider} = Layout;
 
 
 class Frame extends Component {
     render() {
+        console.log(this.props)
         return (
             <Layout>
-                <Header className="header" style={{'background':'#fff'}}>
-                    <div className="logo logo-div" >
+                <Header className="header" style={{'background': '#fff'}}>
+                    <div className="logo logo-div">
                         <img className={'logo-img'} src={logo} alt={'logo'}/>
                     </div>
 
@@ -29,30 +29,24 @@ class Frame extends Component {
                             mode="inline"
                             defaultSelectedKeys={['1']}
                             defaultOpenKeys={['sub1']}
-                            style={{ height: '100%', borderRight: 0 }}
+                            style={{height: '100%', borderRight: 0}}
                         >
-                            <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                                <Menu.Item key="1">option1</Menu.Item>
-                                <Menu.Item key="2">option2</Menu.Item>
-                                <Menu.Item key="3">option3</Menu.Item>
-                                <Menu.Item key="4">option4</Menu.Item>
+                            {adminRoutes.filter(item1 => item1.isNav).map((item2, index) => {
+                                return <Menu.Item key={item2.pathname + index} icon={item2.icon} >
+                                    {item2.title}
+                                </Menu.Item>
+                            })}
+
+                            {/* <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
                             </SubMenu>
                             <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                                <Menu.Item key="5">option5</Menu.Item>
-                                <Menu.Item key="6">option6</Menu.Item>
-                                <Menu.Item key="7">option7</Menu.Item>
-                                <Menu.Item key="8">option8</Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                                <Menu.Item key="9">option9</Menu.Item>
-                                <Menu.Item key="10">option10</Menu.Item>
-                                <Menu.Item key="11">option11</Menu.Item>
-                                <Menu.Item key="12">option12</Menu.Item>
-                            </SubMenu>
+                            </SubMenu>*/}
                         </Menu>
                     </Sider>
-                    <Layout style={{ padding: '0 24px 24px' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
+                    <Layout style={{padding: '0 24px 24px'}}>
+                        <Breadcrumb style={{margin: '16px 0'}}>
                             <Breadcrumb.Item>Home</Breadcrumb.Item>
                             <Breadcrumb.Item>List</Breadcrumb.Item>
                             <Breadcrumb.Item>App</Breadcrumb.Item>
