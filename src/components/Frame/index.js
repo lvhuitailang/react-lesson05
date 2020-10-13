@@ -1,15 +1,30 @@
 import React, {Component} from 'react';
 import {Layout, Menu, Breadcrumb} from 'antd';
-import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
+import {withRouter} from 'react-router-dom';
 import logo from './logo.png'
 import indexcss from './index.less'
 import {adminRoutes} from '../../routes'
 const {Header, Content, Sider} = Layout;
 
 
+@withRouter
 class Frame extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            breadcrumbs:adminRoutes[0].pathname.split('/').map((item,index) => {
+                return <Breadcrumb.Item key={'Breadcrumb'+index}>{item}</Breadcrumb.Item>;
+            })
+        };
+    }
+
+    menuClick = ({ key }) =>{
+       this.props.history.push(key);
+    }
+
     render() {
-        console.log(this.props)
+        // console.log(this.props)
         return (
             <Layout>
                 <Header className="header" style={{'background': '#fff'}}>
@@ -27,12 +42,13 @@ class Frame extends Component {
                     <Sider width={200} className="site-layout-background">
                         <Menu
                             mode="inline"
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
+                            selectedKeys={[this.props.location.pathname]}//默认选择第一个菜单
+                            // defaultOpenKeys={['sub1']}   //这个是如果有子菜单的情况默认打开的子菜单
                             style={{height: '100%', borderRight: 0}}
+                            onClick={this.menuClick}
                         >
                             {adminRoutes.filter(item1 => item1.isNav).map((item2, index) => {
-                                return <Menu.Item key={item2.pathname + index} icon={item2.icon} >
+                                return <Menu.Item key={item2.pathname} icon={item2.icon} title={item2.title} >
                                     {item2.title}
                                 </Menu.Item>
                             })}
@@ -46,11 +62,6 @@ class Frame extends Component {
                         </Menu>
                     </Sider>
                     <Layout style={{padding: '0 24px 24px'}}>
-                        <Breadcrumb style={{margin: '16px 0'}}>
-                            <Breadcrumb.Item>Home</Breadcrumb.Item>
-                            <Breadcrumb.Item>List</Breadcrumb.Item>
-                            <Breadcrumb.Item>App</Breadcrumb.Item>
-                        </Breadcrumb>
                         <Content
                             className="site-layout-background"
                             style={{

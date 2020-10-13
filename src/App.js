@@ -11,7 +11,7 @@ import {
 class App extends Component {
     render() {
         return (
-            <div>
+            <div style={{'height':'100%'}}>
                 <Frame>
                     <Switch>
                         {
