@@ -61,13 +61,13 @@ class Frame extends Component {
                             </SubMenu>*/}
                         </Menu>
                     </Sider>
-                    <Layout style={{padding: '0 24px 24px'}}>
+                    <Layout className={'content-layout'}>
                         <Content
-                            className="site-layout-background"
+                            // className="site-layout-background"
                             style={{
                                 padding: 24,
                                 margin: 0,
-                                minHeight: 280,
+                                background: '#fff'
                             }}
                         >
                             {this.props.children}
