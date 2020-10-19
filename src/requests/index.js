@@ -5,7 +5,7 @@ import {message} from 'antd';
 const isDev = process.env.NODE_ENV === 'development';
 
 const service = Axios.create({
-    baseURL:isDev?'http://rap2api.taobao.org/app/mock/268193/api/v1/articleList':''
+    baseURL:isDev?'http://rap2api.taobao.org/app/mock/268193/':''
 });
 
 service.interceptors.request.use(config => {
@@ -23,6 +23,9 @@ service.interceptors.response.use(resp => {
 });
 
 
-export const getArtileList = () => {
-    return service.post();
+export const getArtileList = (offset=0, limited=10) => {
+    return service.post('api/v1/articleList',{
+        offset,
+        limited
+    });
 }

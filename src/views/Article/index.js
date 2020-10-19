@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, Table,Tag} from 'antd';
 import {getArtileList} from '../../requests'
 import moment from "moment";
+import XLSX from 'xlsx';
 class ArticleList extends Component {
     componentDidMount() {
         this.getData();
@@ -11,8 +12,7 @@ class ArticleList extends Component {
         this.setState({
             isLoading:true
         })
-        getArtileList().then(resp =>{
-            console.log(resp)
+        getArtileList(this.state.offset,this.state.limited).then(resp =>{
             const columns = [
                 {
                     title: '标题',
@@ -58,7 +58,7 @@ class ArticleList extends Component {
             ]
             this.setState({
                 total:resp.total,
-                //这里key的值可以在table上面处理
+                //这里key的值可以在下面table处理
                 // dataSource:resp.list.map(item => {
                 //     return {...item,...{key:item.id}}
                 // }),
@@ -76,21 +76,47 @@ class ArticleList extends Component {
     constructor() {
         super();
         this.state = {
-            isLoading:false
+            isLoading:false,
+            offset : 0,
+            limited : 10
         }
+    }
+    onPageChange = (page, pageSize)=>{
+        this.setState({
+            offset:pageSize * (page - 1),
+            limited:pageSize
+        },()=>{
+            this.getData();
+        });
+    }
+    exportExcel = ()=>{
+        /* convert state to workbook */
+        let sourceTitle = Object.keys(this.state.dataSource[0]);//表头，取表格的第一行数据的key
+        let sourceData = this.state.dataSource.map(item=>Object.values(item));//数据
+        sourceData.reduce((pre,cur)=>{//处理下时间
+            cur[4] = moment(cur[4]).format('yyyy年MM月DD日 HH时mm分ss秒');
+        },sourceData[0]);
+        let exportData = [...[sourceTitle],...sourceData];
+        const ws = XLSX.utils.aoa_to_sheet(exportData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+        /* generate XLSX file and send to client */
+        XLSX.writeFile(wb, "sheetjs.xlsx")
     }
     render() {
         return (
             <>
-                <Card title="文章列表" extra={<a href="#">More</a>} >
+                <Card title="文章列表" extra={<Button onClick={this.exportExcel}>导出当前页</Button>} >
                     <Table
                         rowKey={record => record.id}
                         dataSource={this.state.dataSource}
                         columns={this.state.columns}
                         loading={this.state.isLoading}
                         pagination={{
+                            showQuickJumper:true,
                             total: this.state.total,
-                            hideOnSinglePage: true
+                            hideOnSinglePage: true,
+                            onChange:this.onPageChange
                         }}
                     />
                 </Card>
