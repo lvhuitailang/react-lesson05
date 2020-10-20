@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Button, Card, Table,Tag} from 'antd';
+import {Button, Card, Modal, Table, Tag,Typography} from 'antd';
 import {getArtileList} from '../../requests'
 import moment from "moment";
 import XLSX from 'xlsx';
+
+const {Text} = Typography;
 class ArticleList extends Component {
     componentDidMount() {
         this.getData();
@@ -51,7 +53,7 @@ class ArticleList extends Component {
                     render:(text,record,index)=>{
                         return <Button.Group>
                             <Button size={"small"} type={'primary'}>编辑</Button>
-                            <Button size={"small"} type={'danger'}>删除</Button>
+                            <Button size={"small"} type={'danger'} onClick={this.deleteArticle.bind(this,record)} >删除</Button>
                         </Button.Group>;
                     }
                 }
@@ -78,7 +80,7 @@ class ArticleList extends Component {
         this.state = {
             isLoading:false,
             offset : 0,
-            limited : 10
+            limited : 10,
         }
     }
     onPageChange = (page, pageSize)=>{
@@ -89,6 +91,25 @@ class ArticleList extends Component {
             this.getData();
         });
     }
+    deleteArticle = (record)=>{
+        Modal.confirm({
+            title:'提示',
+            content:<>确认删除 <Text type="danger" ellipsis={true}>{record.title}</Text> ?</>,
+            onCancel:()=>{
+
+            },
+            onOk:()=>{
+                return new Promise((resolve => {
+                    window.setTimeout(()=>{
+                        resolve();
+                    },2000);
+                }))
+
+            }
+        });
+    }
+
+
     exportExcel = ()=>{
         /* convert state to workbook */
         let sourceTitle = Object.keys(this.state.dataSource[0]);//表头，取表格的第一行数据的key
