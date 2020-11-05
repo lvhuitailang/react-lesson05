@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Button, Card, Modal, Table, Tag,Typography} from 'antd';
-import {getArtileList} from '../../requests'
+import {Button, Card, Modal, Table, Tag,Typography,Tooltip} from 'antd';
+import {getArtileList,articleDelete} from '../../requests'
 import moment from "moment";
 import XLSX from 'xlsx';
 
@@ -32,7 +32,12 @@ class ArticleList extends Component {
                     key: 'amount',
                     render:(text, record, index)=>{
                         let amount = record.amount;
-                        return <Tag color={amount>250?'red':'green'}>{amount}</Tag>
+                        return(
+                        <Tooltip title={amount>250?'超过250':'没超过250'}>
+                            <Tag color={amount>250?'red':'green'}>{amount}</Tag>
+                        </Tooltip>
+                        )
+
                     }
                 },
                 {
@@ -53,7 +58,7 @@ class ArticleList extends Component {
                     render:(text,record,index)=>{
                         return <Button.Group>
                             <Button size={"small"} type={'primary'}>编辑</Button>
-                            <Button size={"small"} type={'danger'} onClick={this.deleteArticle.bind(this,record)} >删除</Button>
+                            <Button size={"small"} type={'danger'} onClick={this.onDeleteArticle.bind(this,record)} >删除</Button>
                         </Button.Group>;
                     }
                 }
@@ -75,6 +80,7 @@ class ArticleList extends Component {
             })
         });
     }
+
     constructor() {
         super();
         this.state = {
@@ -91,7 +97,7 @@ class ArticleList extends Component {
             this.getData();
         });
     }
-    deleteArticle = (record)=>{
+    onDeleteArticle = (record)=>{
         Modal.confirm({
             title:'提示',
             content:<>确认删除 <Text type="danger" ellipsis={true}>{record.title}</Text> ?</>,
@@ -99,11 +105,17 @@ class ArticleList extends Component {
 
             },
             onOk:()=>{
-                return new Promise((resolve => {
-                    window.setTimeout(()=>{
-                        resolve();
-                    },2000);
-                }))
+                return new Promise((resolve,reject) => {
+                    articleDelete(record.id).then(resp=>{
+                        window.setTimeout(()=>{
+                            this.getData();
+                            resolve(resp);
+                        },2000);
+                    }).catch(err=>{
+                        reject(err);
+                    });
+
+                })
 
             }
         });

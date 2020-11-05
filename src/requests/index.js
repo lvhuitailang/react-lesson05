@@ -15,11 +15,15 @@ service.interceptors.request.use(config => {
 });
 
 service.interceptors.response.use(resp => {
-    resp = resp.data;
-    if(resp && 200 !== resp.code){
+    if(resp && 200 === resp.status && 200 === resp.data.code){
+        return resp.data.data;
+    }else{
         message.error(resp.data.errMsg);
+        return Promise.reject(resp.data.errMsg);
     }
-    return resp.data;
+},error => {
+    message.error('网络错误');
+    return Promise.reject('网络错误');
 });
 
 
@@ -28,4 +32,8 @@ export const getArtileList = (offset=0, limited=10) => {
         offset,
         limited
     });
+}
+
+export const articleDelete = (id)=>{
+    return service.post('api/v1/articleDelete', {id});
 }
