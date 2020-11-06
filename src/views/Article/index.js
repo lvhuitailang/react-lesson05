@@ -57,7 +57,7 @@ class ArticleList extends Component {
                     key:'actions',
                     render:(text,record,index)=>{
                         return <Button.Group>
-                            <Button size={"small"} type={'primary'}>编辑</Button>
+                            <Button size={"small"} type={'primary'} onClick={this.toEdit.bind(this,record)}>编辑</Button>
                             <Button size={"small"} type={'danger'} onClick={this.onDeleteArticle.bind(this,record)} >删除</Button>
                         </Button.Group>;
                     }
@@ -121,6 +121,12 @@ class ArticleList extends Component {
         });
     }
 
+    toEdit = (record)=>{
+        this.props.history.push({
+            pathname:`/admin/article/edit/${record.id}`,
+            state: {...record}
+        });
+    }
 
     exportExcel = ()=>{
         /* convert state to workbook */

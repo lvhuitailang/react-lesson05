@@ -25,6 +25,8 @@ class Frame extends Component {
 
     render() {
         // console.log(this.props)
+        let keypathnameArr = this.props.location.pathname.split('/');
+        keypathnameArr.length=3;
         return (
             <Layout>
                 <Header className="header" style={{'background': '#fff'}}>
@@ -42,7 +44,7 @@ class Frame extends Component {
                     <Sider width={200} className="site-layout-background">
                         <Menu
                             mode="inline"
-                            selectedKeys={[this.props.location.pathname]}//默认选择第一个菜单
+                            selectedKeys={[keypathnameArr.join('/')]}//默认选择第一个菜单
                             // defaultOpenKeys={['sub1']}   //这个是如果有子菜单的情况默认打开的子菜单
                             style={{height: '100%', borderRight: 0}}
                             onClick={this.menuClick}
