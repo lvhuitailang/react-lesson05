@@ -28,12 +28,20 @@ service.interceptors.response.use(resp => {
 
 
 export const getArtileList = (offset=0, limited=10) => {
-    return service.post('api/v1/articleList',{
+    return service.post('api/v1/article/list',{
         offset,
         limited
     });
 }
 
 export const articleDelete = (id)=>{
-    return service.post('api/v1/articleDelete', {id});
+    return service.post('api/v1/article/delById', {id});
+}
+
+export const getArticleById = (id)=>{
+    return service.post('api/v1/article/getById', {id});
+}
+
+export const saveArticle = (id,data)=>{
+    return service.post('api/v1/article/edit', {id,...data});
 }

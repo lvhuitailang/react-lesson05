@@ -4,10 +4,6 @@ import {Route,Switch,Redirect} from 'react-router-dom'
 import {adminRoutes} from "./routes";
 import Frame from "./components/Frame";
 
-import {
-    Button
-} from "antd";
-
 class App extends Component {
     render() {
         return (
