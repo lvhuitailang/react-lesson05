@@ -4,7 +4,8 @@ import {
     NotFound,
     Settings,
     ArticleList,
-    ArticleEdit
+    ArticleEdit,
+    Notifactions
 } from '../views'
 import React from "react";
 import {UnorderedListOutlined,DashboardOutlined,SettingOutlined } from '@ant-design/icons'
@@ -39,5 +40,9 @@ export const adminRoutes = [{
     title: '设置',
     isNav: true,
     icon:<SettingOutlined />
+}, {
+    pathname: '/admin/notifactions',
+    component: Notifactions,
+    title: '通知中心',
 }
 ]

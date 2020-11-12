@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Layout, Menu, Breadcrumb} from 'antd';
+import {Layout, Menu, Breadcrumb,Dropdown,Avatar,Badge} from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import {withRouter} from 'react-router-dom';
 import logo from './logo.png'
 import indexcss from './index.less'
@@ -22,7 +23,19 @@ class Frame extends Component {
     menuClick = ({ key }) =>{
        this.props.history.push(key);
     }
-
+    dropMenuClick = ({key})=>{
+        this.props.history.push(key);
+    }
+    dropDownMenu = (
+        <Menu onClick={this.dropMenuClick}>
+            <Menu.Item key="/admin/notifactions">
+                <Badge dot={true}>通知
+            </Badge></Menu.Item>
+            <Menu.Item key="/admin/settings">设置</Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="/login">退出</Menu.Item>
+        </Menu>
+    )
     render() {
         // console.log(this.props)
         let keypathnameArr = this.props.location.pathname.split('/');
@@ -34,11 +47,16 @@ class Frame extends Component {
                         <img className={'logo-img'} src={logo} alt={'logo'}/>
                     </div>
 
-                    {/*<Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>*/}
+                        <Dropdown overlay={this.dropDownMenu} trigger={['hover']}>
+                            <div className="ant-dropdown-link" style={{cursor:'pointer',display:'flex',alignItems:'center'}} onClick={e => e.preventDefault()}>
+                                <Badge count={2} offset={[10,0]}>
+                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                                </Badge>
+                                <span>欢迎你！小可爱</span>
+                                <DownOutlined />
+                            </div>
+                        </Dropdown>
+
                 </Header>
                 <Layout>
                     <Sider width={200} className="site-layout-background">

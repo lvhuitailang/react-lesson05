@@ -45,3 +45,7 @@ export const getArticleById = (id)=>{
 export const saveArticle = (id,data)=>{
     return service.post('api/v1/article/edit', {id,...data});
 }
+//月度统计图
+export const monthlyVisit = ()=>{
+    return service.post('api/v1/article/monthlyVisit');
+}
