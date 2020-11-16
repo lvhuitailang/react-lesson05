@@ -18,3 +18,10 @@ export const decrease = (id)=>{
         }
     }
 }
+export const decreaseAsync = id => dispatch => {
+    window.setTimeout(() => {
+        dispatch(decrease(id))
+    }, 2000);
+
+
+}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import indexless from './index.less'
-import {increase,decrease} from '../../testActions/cart'
+import {increase,decrease,decreaseAsync} from '../../testActions/cart'
 class Cart extends Component {
     render() {
         return (
@@ -25,6 +25,7 @@ class Cart extends Component {
                                 <td>{item.name}</td>
                                 <td>{item.price}</td>
                                 <td>
+                                    <button onClick={this.props.decreaseAsync.bind(this,item.id)}>等一会再减</button>
                                     <button onClick={this.props.increase.bind(this,item.id)}>-</button>
                                     <span>{item.amount}</span>
                                     <button onClick={this.props.decrease.bind(this,item.id)}>+</button>
@@ -56,4 +57,4 @@ const mapStateToProps = (state)=>{
     }
 }*/
 
-export default connect(mapStateToProps, {increase,decrease})(Cart);
+export default connect(mapStateToProps, {increase,decrease,decreaseAsync})(Cart);
