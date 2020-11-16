@@ -1,0 +1,46 @@
+<html>
+    <body>
+        <div class="container">
+            <button onclick="dispache({type:'SUB',n:1})">-</button>
+            <span class="countDisplay">10</span>
+            <button onclick="dispache({type:'ADD',n:1})">+</button>
+
+        </div>
+        <script>
+            const dom = document.querySelector('.countDisplay');
+            const counterState = {
+                count:10
+            }
+            const renderConst = (state)=>{
+                dom.innerHTML = state.count
+            }
+            renderConst(counterState);
+
+            const changeState = (action)=>{
+                switch (action.type) {
+                    case 'ADD':
+                        counterState.count = counterState.count + action.n
+                        break;
+                    case 'SUB':
+                        counterState.count = counterState.count - action.n
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+
+            const dispache = (action)=>{
+                changeState(action);
+                renderConst(counterState)
+
+            }
+
+
+
+
+
+        </script>
+    </body>
+</html>
