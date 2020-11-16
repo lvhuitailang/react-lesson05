@@ -1,24 +1,8 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import indexless from './index.less'
 import {increase,decrease} from '../../testActions/cart'
 class Cart extends Component {
-    constructor() {
-        super();
-        this.state = {
-            cartList:[]
-        }
-    }
-
-    getState = ()=>{
-        this.setState({
-            cartList:this.props.store.getState().cart
-        })
-    }
-    componentDidMount() {
-        this.getState();
-        this.props.store.subscribe(this.getState);
-    }
-
     render() {
         return (
             <div>
@@ -33,7 +17,7 @@ class Cart extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.cartList.map(item=>{
+                    {this.props.cartList.map(item=>{
 
                         return (
                             <tr key={item.id}>
@@ -41,13 +25,9 @@ class Cart extends Component {
                                 <td>{item.name}</td>
                                 <td>{item.price}</td>
                                 <td>
-                                    <button onClick={()=>{
-                                        this.props.store.dispatch(decrease(item.id))
-                                    }}>-</button>
+                                    <button onClick={this.props.increase.bind(this,item.id)}>-</button>
                                     <span>{item.amount}</span>
-                                    <button onClick={()=>{
-                                        this.props.store.dispatch(increase(item.id))
-                                    }}>+</button>
+                                    <button onClick={this.props.decrease.bind(this,item.id)}>+</button>
                                 </td>
                                 <td>操作</td>
                             </tr>
@@ -63,4 +43,17 @@ class Cart extends Component {
     }
 }
 
-export default Cart;
+const mapStateToProps = (state)=>{
+    return {
+        cartList:state.cart
+    }
+}
+
+/*const mapDispatchToProps = (dispatch)=>{
+    return{
+        add:(id)=>dispatch(increase(id)),
+        reduce:(id)=>dispatch(decrease(id))
+    }
+}*/
+
+export default connect(mapStateToProps, {increase,decrease})(Cart);
