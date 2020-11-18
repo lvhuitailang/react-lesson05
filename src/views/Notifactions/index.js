@@ -1,58 +1,46 @@
 import React, {Component} from 'react';
-import {Button, Card, Table,List,Avatar,Badge} from "antd";
+import {Button, Card, Table,List,Avatar,Badge,Spin} from "antd";
+import {connect} from 'react-redux';
+import {markNotifactionReadById,markNotifactionReadAll,ge_all_notifactions} from '../../actions/notifactions'
 
+const mapStateToProps = (state)=>{
+    return{
+        notifactions:state.notifactions
+    }
+}
+@connect(mapStateToProps,{markNotifactionReadById,markNotifactionReadAll,ge_all_notifactions})
 class Notifactions extends Component {
-
-    checkAll = ()=>{
-
+    componentDidMount() {
+        this.props.ge_all_notifactions();
     }
-    checkOne = ()=>{
 
-    }
-    data = [
-        {
-            title: 'Ant Design Title 1',
-            read:false
-        },
-        {
-            title: 'Ant Design Title 2',
-            read:true
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-            read:true
-        },
-    ];
     render() {
         return (
             <>
-                <Card title="通知" bordered={false} extra={<Button onClick={this.checkAll}>全部标记为已读</Button>} >
+            <Spin spinning={this.props.notifactions.doLoading}>
+                <Card loading={this.props.notifactions.loading} title="通知" bordered={false} extra={<Button disabled={this.props.notifactions.list.every(item=>item.read === true)} onClick={this.props.markNotifactionReadAll}>全部标记为已读</Button>} >
                     <List
                         itemLayout="horizontal"
-                        dataSource={this.data}
+                        dataSource={this.props.notifactions.list}
                         renderItem={item => (
                             <List.Item
-                                extra={<Button onClick={this.checkOne}>标记为已读</Button>}
+                                extra={item.read?null:<Button onClick={this.props.markNotifactionReadById.bind(this,item.id)}>标记为已读</Button>}
 
                             >
                                 <List.Item.Meta
                                     avatar={
-                                        <Badge dot={true} style={{display:!item.read?'flex':'none'}}>
+                                        <Badge dot={!item.read} >
                                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                         </Badge>
                                     }
                                     title={<a href="https://ant.design">{item.title}</a>}
-                                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                                    description={item.desc}
                                 />
                             </List.Item>
                         )}
                     />
-
                 </Card>
-
+            </Spin>
             </>
         );
     }

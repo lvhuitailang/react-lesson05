@@ -49,3 +49,7 @@ export const saveArticle = (id,data)=>{
 export const monthlyVisit = ()=>{
     return service.post('api/v1/article/monthlyVisit');
 }
+//获取通知列表
+export const getAllNotifactions = ()=>{
+    return service.post('api/v1/notifactions/list');
+}

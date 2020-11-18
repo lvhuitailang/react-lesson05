@@ -5,9 +5,19 @@ import {withRouter} from 'react-router-dom';
 import logo from './logo.png'
 import indexcss from './index.less'
 import {adminRoutes} from '../../routes'
+import {connect} from 'react-redux';
+
+import {ge_all_notifactions} from '../../actions/notifactions'
+
+
 const {Header, Content, Sider} = Layout;
 
-
+const mapStateToProps = (state)=>{
+    return{
+        notifactionCount:state.notifactions.list.filter(item=>item.read !== true).length
+    }
+}
+@connect(mapStateToProps,{ge_all_notifactions})
 @withRouter
 class Frame extends Component {
 
@@ -18,6 +28,11 @@ class Frame extends Component {
                 return <Breadcrumb.Item key={'Breadcrumb'+index}>{item}</Breadcrumb.Item>;
             })
         };
+
+    }
+
+    componentDidMount() {
+        this.props.ge_all_notifactions();
     }
 
     menuClick = ({ key }) =>{
@@ -26,18 +41,20 @@ class Frame extends Component {
     dropMenuClick = ({key})=>{
         this.props.history.push(key);
     }
-    dropDownMenu = (
-        <Menu onClick={this.dropMenuClick}>
-            <Menu.Item key="/admin/notifactions">
-                <Badge dot={true}>通知
-            </Badge></Menu.Item>
-            <Menu.Item key="/admin/settings">设置</Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="/login">退出</Menu.Item>
-        </Menu>
-    )
+    dropDownMenu = ()=>{
+        return (
+            <Menu onClick={this.dropMenuClick}>
+                <Menu.Item key="/admin/notifactions">
+                    <Badge dot={this.props.notifactionCount>0}>通知
+                    </Badge></Menu.Item>
+                <Menu.Item key="/admin/settings">设置</Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="/login">退出</Menu.Item>
+            </Menu>
+        )
+    }
+
     render() {
-        // console.log(this.props)
         let keypathnameArr = this.props.location.pathname.split('/');
         keypathnameArr.length=3;
         return (
@@ -49,7 +66,7 @@ class Frame extends Component {
 
                         <Dropdown overlay={this.dropDownMenu} trigger={['hover']}>
                             <div className="ant-dropdown-link" style={{cursor:'pointer',display:'flex',alignItems:'center'}} onClick={e => e.preventDefault()}>
-                                <Badge count={2} offset={[10,0]}>
+                                <Badge count={this.props.notifactionCount} offset={[10,0]}>
                                     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                 </Badge>
                                 <span>欢迎你！小可爱</span>
@@ -72,13 +89,6 @@ class Frame extends Component {
                                     {item2.title}
                                 </Menu.Item>
                             })}
-
-                            {/* <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                            </SubMenu>
-                            <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                            </SubMenu>
-                            <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                            </SubMenu>*/}
                         </Menu>
                     </Sider>
                     <Layout className={'content-layout'}>
