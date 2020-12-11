@@ -9,16 +9,22 @@ import {
     mainRoutes
 } from "./routes";
 
+console.log(store.getState())
+
 render(
     <Provider store={store}>
         <Router>
             <Switch>
                 <Route path={'/admin'} render={(routerProps)=>{
                     //TODO 后期做权限验证，需要登录才能访问admin
-                    return <App {...routerProps}/>
+                    return (
+                            <App {...routerProps}/>
+                        )
+
                 }}/>
                 {
-                    mainRoutes.map((item,index) => {
+
+                        mainRoutes.map((item,index) => {
                         return <Route key={item.pathname+index} path={item.pathname} component={item.component} />
                     })
 

@@ -3,10 +3,19 @@ import './index.less'
 import {Route,Switch,Redirect} from 'react-router-dom'
 import {adminRoutes} from "./routes";
 import Frame from "./components/Frame";
+import {connect} from 'react-redux'
 
+const mapStateToProps = state =>{
+    return {user:state.user}
+}
+
+@connect(mapStateToProps)
 class App extends Component {
     render() {
         return (
+            this.props.user.isLogin
+            ?
+
             <div style={{'height':'100%'}}>
                 <Frame>
                     <Switch>
@@ -23,6 +32,8 @@ class App extends Component {
                     </Switch>
                 </Frame>
             </div>
+                :
+                <Redirect to={'/login'}/>
         );
     }
 }

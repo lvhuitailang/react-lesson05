@@ -53,3 +53,6 @@ export const monthlyVisit = ()=>{
 export const getAllNotifactions = ()=>{
     return service.post('api/v1/notifactions/list');
 }
+export const loginPost = (userInfo) =>{
+    return service.post('api/v1/loginPost',userInfo)
+}

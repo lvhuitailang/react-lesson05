@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/babel">
+    class Food extends React.Component{
+        constructor() {
+            super();
+            this.state = {
+                foodList : [
+                    '雪花鸡淖','火爆腰花','酸辣臊子蹄筋','炝黄瓜','麻酱凤尾','家常海参','鲜花豆腐','坛子肉','鱼香牛肉丝','参麦团鱼','芹黄鱼丝','芪烧活鱼','鱼香肉片','叉烧鱼','清汤燕菜','复元汤','乌发汤','鸡包鱼翅','锅贴鸡片','椒盐八宝鸡','合川肉片','烩鸭四宝','鱼香肉丝','豆瓣鲫鱼','银杏蒸鸭','一品海参','爆炒腰花','金钱鸡塔','鱼香荷包蛋','金钱海参','绣球鱼翅','原笼玉簪','羊耳鸡塔','火爆荔枝腰','盐水肫花','荷包鱿鱼','沙参心肺汤','冬菜扣肉','酱酥桃仁','红油耳片','酱爆肉','粉蒸排骨','豆鼓鱼','鱼香腰花','炸珍珠虾','枸杞煨鸡汤','黄豆芽排骨豆腐汤','雪花鸡淖','火爆腰花','回锅肉','玉兔葵菜尖','南卤醉虾','荷包豆腐','粉蒸牛肉','虫草鸭舌','珍珠酥皮鸡','酸菜肚片汤','乡村嫩鸡川菜名菜','鸡丝米粉','芪蒸鹌鹑','香酥鸭','生爆盐煎肉','椒盐蹄膀','干煸鳝背','冬菜肉末','酿青椒','烤扁担肉','一品豆腐汤','金钱口蘑汤','干烧鱼翅','炒鸡什件','醋溜黄瓜','酸辣海参','酱爆鸭块','红烧猪蹄','麻辣豆腐','麻婆豆腐','水晶南瓜','辣白菜','泡菜炒肉末','川西肉豆腐','白果烧鸡','辣子鸡丁'],
+                currFood:'雪花鸡淖'
+            }
+        }
+
+        ramdomFood = ()=>{
+            let thisInt = undefined;
+            new Promise(resolve => {
+                thisInt  = window.setInterval(()=>{
+
+                    this.setState({
+                        currFood:this.state.foodList[Math.floor(Math.random()*(this.state.foodList.length)-1)]
+                    })
+
+                },100);
+                window.setTimeout(()=>{
+                    if(thisInt){
+                        clearInterval(thisInt);
+                    }
+                    resolve();
+                },3000);
+            }).finally(()=>{
+                if(thisInt){
+                    thisInt.clearInterval();
+                }
+            });
+        }
+        render() {
+            return (
+                <div>
+                    <button onClick={this.ramdomFood}>Start</button>
+                    <div className="dishes">
+                        {this.state.currFood}
+                    </div>
+                </div>
+            )
+        }
+
+
+    }
+
+
+
+    ReactDOM.render(
+        <Food />
+       ,
+        document.getElementById('container')
+    );
+
+</script>
+
+</body>
+</html>
