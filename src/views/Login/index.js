@@ -51,6 +51,7 @@ class Login extends Component {
     }
 
     onFinish = (values)=>{
+        console.log(values)
         this.props.loginRequest(values)
     }
 

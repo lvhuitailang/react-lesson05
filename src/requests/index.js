@@ -7,6 +7,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const service = Axios.create({
     baseURL:isDev?'http://rap2api.taobao.org/app/mock/268193/':''
 });
+const serviceNoToken = Axios.create({
+    baseURL:isDev?'http://rap2api.taobao.org/app/mock/268193/':''
+});
 
 service.interceptors.request.use(config => {
     config.headers.authToken = 'aaa';//请求头
@@ -15,6 +18,17 @@ service.interceptors.request.use(config => {
 });
 
 service.interceptors.response.use(resp => {
+    if(resp && 200 === resp.status && 200 === resp.data.code){
+        return resp.data.data;
+    }else{
+        message.error(resp.data.errMsg);
+        return Promise.reject(resp.data.errMsg);
+    }
+},error => {
+    message.error('网络错误');
+    return Promise.reject('网络错误');
+});
+serviceNoToken.interceptors.response.use(resp => {
     if(resp && 200 === resp.status && 200 === resp.data.code){
         return resp.data.data;
     }else{
@@ -54,5 +68,5 @@ export const getAllNotifactions = ()=>{
     return service.post('api/v1/notifactions/list');
 }
 export const loginPost = (userInfo) =>{
-    return service.post('api/v1/loginPost',userInfo)
+    return serviceNoToken.post('api/v1/loginPost',userInfo)
 }
