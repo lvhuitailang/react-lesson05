@@ -12,8 +12,20 @@ const serviceNoToken = Axios.create({
 });
 
 service.interceptors.request.use(config => {
-    config.headers.authToken = 'aaa';//请求头
     //
+    const authToken = window.localStorage.getItem('authToken') ||  window.sessionStorage.getItem('authToken');
+    if(Boolean(authToken)){
+        config.headers.authToken = authToken;//请求头
+    }else{
+        message.error('请登录后操作!');
+        window.localStorage.removeItem('authToken');
+        window.sessionStorage.removeItem('authToken');
+        window.sessionStorage.removeItem('userInfo');
+        window.setTimeout(()=>{
+            window.location.href= '/#/login';
+        },500);
+
+    }
     return config;
 });
 

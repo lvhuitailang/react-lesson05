@@ -13,8 +13,10 @@ import {ge_all_notifactions} from '../../actions/notifactions'
 const {Header, Content, Sider} = Layout;
 
 const mapStateToProps = (state)=>{
+    const userInfo = JSON.parse(window.localStorage.getItem('userInfo')) || JSON.parse(window.sessionStorage.getItem('userInfo'));
     return{
-        notifactionCount:state.notifactions.list.filter(item=>item.read !== true).length
+        notifactionCount:state.notifactions.list.filter(item=>item.read !== true).length,
+        user: {...state.user,...userInfo}
     }
 }
 @connect(mapStateToProps,{ge_all_notifactions})
@@ -49,7 +51,7 @@ class Frame extends Component {
                     </Badge></Menu.Item>
                 <Menu.Item key="/admin/settings">设置</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item key="/login">退出</Menu.Item>
+                <Menu.Item key="/logOut">退出</Menu.Item>
             </Menu>
         )
     }
@@ -63,17 +65,15 @@ class Frame extends Component {
                     <div className="logo logo-div">
                         <img className={'logo-img'} src={logo} alt={'logo'}/>
                     </div>
-
-                        <Dropdown overlay={this.dropDownMenu} trigger={['hover']}>
-                            <div className="ant-dropdown-link" style={{cursor:'pointer',display:'flex',alignItems:'center'}} onClick={e => e.preventDefault()}>
-                                <Badge count={this.props.notifactionCount} offset={[10,0]}>
-                                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                </Badge>
-                                <span>欢迎你！小可爱</span>
-                                <DownOutlined />
-                            </div>
-                        </Dropdown>
-
+                    <Dropdown overlay={this.dropDownMenu} trigger={['hover']}>
+                        <div className="ant-dropdown-link" style={{cursor:'pointer',display:'flex',alignItems:'center'}} onClick={e => e.preventDefault()}>
+                            <Badge count={this.props.notifactionCount} offset={[10,0]}>
+                                <Avatar src={this.props.user.avator} />
+                            </Badge>
+                            <span>欢迎你！{this.props.user.nickname}</span>
+                            <DownOutlined />
+                        </div>
+                    </Dropdown>
                 </Header>
                 <Layout>
                     <Sider width={200} className="site-layout-background">
