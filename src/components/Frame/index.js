@@ -8,6 +8,7 @@ import {adminRoutes} from '../../routes'
 import {connect} from 'react-redux';
 
 import {ge_all_notifactions} from '../../actions/notifactions'
+import {logout_async} from '../../actions/login'
 
 
 const {Header, Content, Sider} = Layout;
@@ -19,7 +20,7 @@ const mapStateToProps = (state)=>{
         user: {...state.user,...userInfo}
     }
 }
-@connect(mapStateToProps,{ge_all_notifactions})
+@connect(mapStateToProps,{ge_all_notifactions,logout_async})
 @withRouter
 class Frame extends Component {
 
@@ -37,11 +38,17 @@ class Frame extends Component {
         this.props.ge_all_notifactions();
     }
 
+    logout = ()=>{
+        this.props.logout_async(this.props.user);
+    }
+
     menuClick = ({ key }) =>{
        this.props.history.push(key);
     }
     dropMenuClick = ({key})=>{
-        this.props.history.push(key);
+        if(key && '/logOut' !== key){
+            this.props.history.push(key);
+        }
     }
     dropDownMenu = ()=>{
         return (
@@ -51,7 +58,7 @@ class Frame extends Component {
                     </Badge></Menu.Item>
                 <Menu.Item key="/admin/settings">设置</Menu.Item>
                 <Menu.Divider />
-                <Menu.Item key="/logOut">退出</Menu.Item>
+                <Menu.Item key="/logOut" onClick={this.logout}>退出</Menu.Item>
             </Menu>
         )
     }

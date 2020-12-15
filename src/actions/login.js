@@ -3,9 +3,7 @@ import {getAllNotifactions, loginPost} from '../requests'
 import {message} from "antd";
 
 const start_login = ()=>{
-    window.localStorage.removeItem('authToken');
-    window.sessionStorage.removeItem('authToken');
-    window.sessionStorage.removeItem('userInfo');
+    clearAuth();
     return {
         type:actionTypes.START_LOGIN
     }
@@ -15,14 +13,25 @@ const end_login = ()=>{
         type:actionTypes.END_LOGIN
     }
 }
+const logout = ()=>{
+    clearAuth();
+    window.location.href = '/';
+    return {
+        type:actionTypes.LOGOUT
+    }
+}
+
+export const logout_async = (userInfo)=>dispatch=>{
+    //这里应该告诉服务端
+    dispatch(logout);
+}
 
 const login_success = (userInfo)=>{
-    if(true === userInfo.rmember){
+    clearAuth();
+    if(true === userInfo.remember){
         window.localStorage.setItem('authToken',userInfo.authToken);
         window.localStorage.setItem('userInfo',JSON.stringify({username:userInfo.username,nickname:userInfo.nickname,avator:userInfo.avator,role:userInfo.role}));
     }else{
-        window.localStorage.removeItem('authToken');
-        window.sessionStorage.removeItem('userInfo');
         window.sessionStorage.setItem('authToken',userInfo.authToken);
         window.sessionStorage.setItem('userInfo',JSON.stringify({username:userInfo.username,nickname:userInfo.nickname,avator:userInfo.avator,role:userInfo.role}));
     }
@@ -35,9 +44,7 @@ const login_success = (userInfo)=>{
 }
 
 const login_fail = ()=>{
-    window.localStorage.removeItem('authToken');
-    window.sessionStorage.removeItem('authToken');
-    window.sessionStorage.removeItem('userInfo');
+    clearAuth();
     return {
         type:actionTypes.LOGIN_FAIL
     }
@@ -63,4 +70,11 @@ export const loginRequest = (userInfo,his)=>dispatch=>{
 
 
 
+}
+
+const clearAuth = ()=>{
+    window.localStorage.removeItem('authToken');
+    window.localStorage.removeItem('userInfo');
+    window.sessionStorage.removeItem('authToken');
+    window.sessionStorage.removeItem('userInfo');
 }

@@ -98,15 +98,13 @@ class Login extends Component {
                             <Input.Password prefix={<LockOutlined />}  disabled={this.props.user.isLogining} />
                         </Form.Item>
 
-                        <Form.Item {...this.tailLayout} name="remember" valuePropName="checked">
-                            <Checkbox disabled={this.props.user.isLogining}>Remember me</Checkbox>
+                        <Form.Item {...this.tailLayout} >
+                            <Form.Item name="remember" valuePropName="checked" >
+                                <Checkbox disabled={this.props.user.isLogining}>Remember me</Checkbox>
+                            </Form.Item>
                             <Button type="primary" htmlType="submit" disabled={this.props.user.isLogining} >
                                 登录
                             </Button>
-                        {/*</Form.Item>*/}
-
-                        {/*<Form.Item {...this.tailLayout}>*/}
-
                         </Form.Item>
                     </Form>
                 </Card>
