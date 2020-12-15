@@ -28,9 +28,21 @@ const userChange = (state = initState,action)=>{
             }
         case actionTypes.LOGIN_FAIL:
             return {
-                ...state,
-                isLogin: false,
-                isLogining:false,
+                id:'',
+                nickname:'',
+                avator:'',
+                role:'',
+                isLogin:isLogin,
+                isLogining:false //登录中
+            }
+        case actionTypes.LOGOUT:
+            return {
+                id:'',
+                nickname:'',
+                avator:'',
+                role:'',
+                isLogin:isLogin,
+                isLogining:false //登录中
             }
 
         default:

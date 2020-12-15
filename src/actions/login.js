@@ -15,7 +15,7 @@ const end_login = ()=>{
 }
 const logout = ()=>{
     clearAuth();
-    window.location.href = '/';
+    // window.location.href = '/';
     return {
         type:actionTypes.LOGOUT
     }
@@ -23,7 +23,7 @@ const logout = ()=>{
 
 export const logout_async = (userInfo)=>dispatch=>{
     //这里应该告诉服务端
-    dispatch(logout);
+    dispatch(logout());
 }
 
 const login_success = (userInfo)=>{
