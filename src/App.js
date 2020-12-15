@@ -14,26 +14,33 @@ class App extends Component {
     render() {
         return (
             this.props.user.isLogin
-            ?
+                ?
+                <div style={{'height': '100%'}}>
+                    <Frame>
+                        <Switch>
+                            {
+                                adminRoutes.map((item, index) => {
 
-            <div style={{'height':'100%'}}>
-                <Frame>
-                    <Switch>
-                        {
-                            adminRoutes.map((item, index) => {
-                                return <Route key={item.pathname+index} path={item.pathname} exact={item.exact} render={(routerProps) => {
-                                    //TODO 页面级别的权限验证
-                                    return <item.component {...routerProps}/>
-                                }}/>
-                            })
-                        }
-                        <Redirect from={'/admin'} to={adminRoutes[0].pathname} exact/>
-                        <Redirect to={'/404'} />
-                    </Switch>
-                </Frame>
-            </div>
+                                    return <Route key={item.pathname + index} path={item.pathname} exact={item.exact}
+                                                  render={(routerProps) => {
+                                                      //TODO 页面级别的权限验证
+                                                      try{
+                                                          const hasPermission =  (item.role.includes('*') )|| ( this.props.user.role.some(r=> item.role.includes(r)));
+                                                          return hasPermission ? <item.component {...routerProps}/> : <Redirect to={'/admin/noAuth'} />;
+                                                      }catch (e) {
+                                                          return <Redirect to={'/admin/noAuth'} />;
+                                                      }
+
+                                                  }}/>
+                                })
+                            }
+                            <Redirect from={'/admin'} to={adminRoutes[0].pathname} exact/>
+                            <Redirect to={'/404'}/>
+                        </Switch>
+                    </Frame>
+                </div>
                 :
-                <Redirect to={'/login'}/>
+                <Redirect to={'/login'} />
         );
     }
 }

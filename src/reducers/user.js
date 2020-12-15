@@ -1,11 +1,9 @@
 import actionTypes from '../actions/actionTypes'
 
 const isLogin = Boolean(window.localStorage.getItem('authToken')) ||  Boolean(window.sessionStorage.getItem('authToken'));
+const userInfo = JSON.parse(window.localStorage.getItem('userInfo') || window.sessionStorage.getItem('userInfo'))
 const initState = {
-    id:'',
-    nickname:'',
-    avator:'',
-    role:'',
+    ...userInfo,
     isLogin:isLogin,
     isLogining:false //登录中
 }
@@ -32,7 +30,7 @@ const userChange = (state = initState,action)=>{
                 nickname:'',
                 avator:'',
                 role:'',
-                isLogin:isLogin,
+                isLogin:false,
                 isLogining:false //登录中
             }
         case actionTypes.LOGOUT:
@@ -41,7 +39,7 @@ const userChange = (state = initState,action)=>{
                 nickname:'',
                 avator:'',
                 role:'',
-                isLogin:isLogin,
+                isLogin:false,
                 isLogining:false //登录中
             }
 
