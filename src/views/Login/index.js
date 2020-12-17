@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {Form,Card,Input,Checkbox,Button,Spin} from 'antd';
 import { UserOutlined ,LockOutlined } from '@ant-design/icons';
-import  indexCss from './index.less';
+import './index.less';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
 
 import {loginRequest} from '../../actions/login';
 

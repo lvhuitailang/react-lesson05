@@ -42,6 +42,11 @@ const userChange = (state = initState,action)=>{
                 isLogin:false,
                 isLogining:false //登录中
             }
+        case actionTypes.CHANGE_AVATOR:
+            return {
+                ...state,
+                avator: action.payload.avator
+            }
 
         default:
             return state;

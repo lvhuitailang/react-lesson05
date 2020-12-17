@@ -3,7 +3,7 @@ import {Layout, Menu, Breadcrumb,Dropdown,Avatar,Badge} from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import {withRouter} from 'react-router-dom';
 import logo from './logo.png'
-import indexcss from './index.less'
+import './index.less'
 import {adminRoutes} from '../../routes'
 import {connect} from 'react-redux';
 
@@ -14,10 +14,12 @@ import {logout_async} from '../../actions/login'
 const {Header, Content, Sider} = Layout;
 
 const mapStateToProps = (state)=>{
-    const userInfo = JSON.parse(window.localStorage.getItem('userInfo')) || JSON.parse(window.sessionStorage.getItem('userInfo'));
+    //注释这里我在登录的action里面已经同步过了，所以这里无需再次从本地存储里面获取
+    // const userInfo = JSON.parse(window.localStorage.getItem('userInfo')) || JSON.parse(window.sessionStorage.getItem('userInfo'));
     return{
         notifactionCount:state.notifactions.list.filter(item=>item.read !== true).length,
-        user: {...state.user,...userInfo}
+        // user: {...state.user,...userInfo}
+        user: state.user
     }
 }
 @connect(mapStateToProps,{ge_all_notifactions,logout_async})
@@ -56,7 +58,7 @@ class Frame extends Component {
                 <Menu.Item key="/admin/notifactions">
                     <Badge dot={this.props.notifactionCount>0}>通知
                     </Badge></Menu.Item>
-                <Menu.Item key="/admin/settings">设置</Menu.Item>
+                <Menu.Item key="/admin/profile">个人中心</Menu.Item>
                 <Menu.Divider />
                 <Menu.Item key="/logOut" onClick={this.logout}>退出</Menu.Item>
             </Menu>
@@ -104,7 +106,8 @@ class Frame extends Component {
                             style={{
                                 padding: 24,
                                 margin: 0,
-                                background: '#fff'
+                                background: '#fff',
+                                flexShrink:0
                             }}
                         >
                             {this.props.children}

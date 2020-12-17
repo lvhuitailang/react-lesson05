@@ -1,5 +1,3 @@
-import React from "react";
-
 /*
 import Dashboard from "./Dashboard";
 import Login from "./Login";
@@ -44,6 +42,10 @@ const NoAuth = Loadable({
     loader : () => import('./NoAuth'),
     loading : Loading
 });
+const Profile = Loadable({
+    loader : () => import('./Profile'),
+    loading : Loading
+});
 
 
 export {
@@ -54,5 +56,6 @@ export {
     ArticleList,
     ArticleEdit,
     Notifactions,
-    NoAuth
+    NoAuth,
+    Profile
 }

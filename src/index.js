@@ -10,7 +10,6 @@ import {
 } from "./routes";
 
 console.log(store.getState())
-
 render(
     <Provider store={store}>
         <Router>

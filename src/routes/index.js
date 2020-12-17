@@ -6,7 +6,7 @@ import {
     ArticleList,
     ArticleEdit,
     Notifactions,
-    NoAuth
+    NoAuth, Profile
 } from '../views'
 import React from "react";
 import {UnorderedListOutlined,DashboardOutlined,SettingOutlined } from '@ant-design/icons'
@@ -49,10 +49,16 @@ export const adminRoutes = [{
     pathname: '/admin/notifactions',
     component: Notifactions,
     title: '通知中心',
+    role:['*']
 }, {
     pathname: '/admin/noAuth',
     component: NoAuth,
     title: '未授权页面',
     role:['*']
-}
+}, {
+        pathname: '/admin/profile',
+        component: Profile,
+        title: '未授权页面',
+        role:['*']
+    }
 ]

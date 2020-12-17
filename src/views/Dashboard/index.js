@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, Row, Col, Spin} from "antd";
 import {monthlyVisit} from '../../requests'
 import echarts from 'echarts';
-import css from './index.less';
+import './index.less';
 
 class Dashboard extends Component {
     constructor() {
@@ -56,6 +56,10 @@ class Dashboard extends Component {
                 }
             }]
         };
+        if(!this.updater.isMounted(this)){
+            //如果请求过程中，Article组件已经销毁（比如切换了菜单），就不要设置值了
+            return
+        }
         this.setState({
             isLoading:true
         })
@@ -72,6 +76,10 @@ class Dashboard extends Component {
         }).catch(err=>{
 
         }).finally(()=>{
+            if(!this.updater.isMounted(this)){
+                //如果请求过程中，Article组件已经销毁（比如切换了菜单），就不要设置值了
+                return
+            }
             this.setState({
                 isLoading:false
             })

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card, Table,List,Avatar,Badge,Spin} from "antd";
+import {Button, Card,List,Avatar,Badge,Spin} from "antd";
 import {connect} from 'react-redux';
 import {markNotifactionReadById,markNotifactionReadAll,ge_all_notifactions} from '../../actions/notifactions'
 

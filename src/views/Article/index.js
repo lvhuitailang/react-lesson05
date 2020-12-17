@@ -11,6 +11,10 @@ class ArticleList extends Component {
     }
 
     getData = ()=>{
+        if(!this.updater.isMounted(this)){
+            //如果请求过程中，Article组件已经销毁（比如切换了菜单），就不要设置值了
+            return
+        }
         this.setState({
             isLoading:true
         })
@@ -63,6 +67,13 @@ class ArticleList extends Component {
                     }
                 }
             ]
+
+            if(!this.updater.isMounted(this)){
+                //如果请求过程中，Article组件已经销毁（比如切换了菜单），就不要设置值了
+                return
+            }
+
+
             this.setState({
                 total:resp.total,
                 //这里key的值可以在下面table处理
@@ -75,6 +86,11 @@ class ArticleList extends Component {
         }).catch(err=>{
 
         }).finally(()=>{
+            if(!this.updater.isMounted(this)){
+                //如果请求过程中，Article组件已经销毁（比如切换了菜单），就不要设置值了
+                return
+            }
+
             this.setState({
                 isLoading:false
             })
@@ -133,7 +149,8 @@ class ArticleList extends Component {
         let sourceTitle = Object.keys(this.state.dataSource[0]);//表头，取表格的第一行数据的key
         let sourceData = this.state.dataSource.map(item=>Object.values(item));//数据
         sourceData.reduce((pre,cur)=>{//处理下时间
-            cur[4] = moment(cur[4]).format('yyyy年MM月DD日 HH时mm分ss秒');
+           cur[4] = moment(cur[4]).format('yyyy年MM月DD日 HH时mm分ss秒');
+           return  cur[4];
         },sourceData[0]);
         let exportData = [...[sourceTitle],...sourceData];
         const ws = XLSX.utils.aoa_to_sheet(exportData);

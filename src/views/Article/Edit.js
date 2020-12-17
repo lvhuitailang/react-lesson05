@@ -20,7 +20,7 @@ class ArticleEdit extends Component {
         this.initEditor();
         this.getInitValue();
     }
-    componentWillUnmount() {
+    UNSAFE_componentWillUnmount() {
         this.ed.destroy();
     }
 
@@ -202,7 +202,7 @@ class ArticleEdit extends Component {
                                     required: true,
                                     validator:(r,v,c)=>{
                                         v = this.ed.txt.html()
-                                        if(!v || '' == v){
+                                        if(!v || '' === v){
                                             return Promise.reject('请输入内容');
                                         }else{
                                             return Promise.resolve();

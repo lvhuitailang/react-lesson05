@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import {getAllNotifactions, loginPost} from '../requests'
+import {loginPost} from '../requests'
 import {message} from "antd";
 
 const start_login = ()=>{
@@ -67,8 +67,28 @@ export const loginRequest = (userInfo,his)=>dispatch=>{
 
 
     },2000);//模拟登陆延时
+}
 
+export const change_avator = avatorUrl=>{
+    //更新下sessionStorage和localStorage
+    const localStorageUser = JSON.parse(window.localStorage.getItem('userInfo'));
+    const sessionStorageUser = JSON.parse(window.sessionStorage.getItem('userInfo'));
+    if(localStorageUser){
+        localStorageUser.avator = avatorUrl;
+        window.localStorage.setItem('userInfo',JSON.stringify(localStorageUser));
+    }
+    if(sessionStorageUser){
+        sessionStorageUser.avator = avatorUrl;
+        window.sessionStorage.setItem('userInfo',JSON.stringify(sessionStorageUser));
+    }
 
+    //然后更新redux里面的
+    return {
+        type:actionTypes.CHANGE_AVATOR,
+        payload:{
+            avator:avatorUrl
+        }
+    }
 
 }
 
